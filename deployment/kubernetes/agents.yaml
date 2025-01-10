@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ai-agents
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: ai-agents
+  template:
+    metadata:
+      labels:
+        app: ai-agents
+    spec:
+      containers:
+      - name: ai-agents
+        image: ai-agents:latest
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
+        env:
+        - name: OPENAI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: agent-secrets
+              key: openai-api-key 
